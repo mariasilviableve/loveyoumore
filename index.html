@@ -6,9 +6,28 @@
     <title>loveyoumore</title>
     <!-- Importa Phaser 3 -->
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+    
+    <!-- CARICAMENTO DEL FONT -->
+    <style>
+        @font-face {
+            font-family: 'SouthPark'; /* Il nome che useremo nel gioco */
+            src: url('assets/southpark.ttf') format('truetype');
+        }
+        
+        /* Trucco: diciamo al body di usarlo, così il browser lo scarica subito */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: #333; 
+            font-family: 'SouthPark'; 
+            color: transparent; /* Lo rendiamo invisibile fuori dal gioco */
+        }
+    </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #333;">
-    <!-- Collega il tuo file JavaScript -->
+<body>
+    <!-- Questo div fantasma forza il caricamento reale del font prima del gioco -->
+    <div style="font-family: 'SouthPark'; position: absolute; visibility: hidden;">.</div>
+    
     <script src="game.js"></script>
 </body>
 </html>
