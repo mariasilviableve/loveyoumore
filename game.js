@@ -70,7 +70,7 @@ function create() {
     vittoriaRaggiunta = false;
     
     // TRUCCO PER TESTARE IL FINALE: Cambia a 0 quando vuoi giocare per davvero!
-    score = 240; 
+    score = 0; 
     fioriRaccolti = 0;
 
     this.cameras.main.setBackgroundColor('#87CEEB'); 
