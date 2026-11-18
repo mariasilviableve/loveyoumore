@@ -71,7 +71,7 @@ function create() {
     
     // TRUCCO PER TESTARE IL FINALE: Cambia a 0 quando vuoi giocare per davvero!
     score = 0; 
-    fioriRaccolti = 0;
+    fioriRaccolti = 0; 
 
     this.cameras.main.setBackgroundColor('#87CEEB'); 
 
