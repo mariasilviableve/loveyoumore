@@ -40,15 +40,19 @@ let vittoriaText;
 let ragazza;
 
 function preload() {
+    // 1. CARICAMENTO DEI TUOI PERSONAGGI
+    this.load.image('ndr_static', 'assets/ndr_static.png');
+    this.load.image('ndr_jump', 'assets/ndr_jump.png');
+    this.load.image('ndr_final', 'assets/ndr_final.png');
+    this.load.image('slvblv', 'assets/slvblv.png');
+
+    // 2. GRAFICA PROVVISORIA PER IL RESTO
     let graphics = this.make.graphics({ x: 0, y: 0, add: false });
     
     // Pavimento
     graphics.fillStyle(0x228B22, 1);
     graphics.fillRect(0, 0, 390, 400); 
     graphics.generateTexture('pavimento', 390, 400);
-    
-    // Giocatore
-    graphics.clear(); graphics.fillStyle(0xFF0000, 1); graphics.fillRect(0, 0, 40, 40); graphics.generateTexture('protagonista', 40, 40);
 
     // Ostacoli
     graphics.clear(); graphics.fillStyle(0x003399, 1); graphics.fillRect(0, 0, 100, 50); graphics.generateTexture('vagone', 100, 50);
@@ -59,9 +63,8 @@ function preload() {
     graphics.clear(); graphics.fillStyle(0xFFD700, 1); graphics.fillCircle(10, 10, 10); graphics.generateTexture('moneta', 20, 20);
     graphics.clear(); graphics.fillStyle(0xFFFFFF, 0.5); graphics.fillCircle(30, 30, 30); graphics.generateTexture('bottone', 60, 60);
 
-    // Fiori e Finale
+    // Fiori e Cuori
     graphics.clear(); graphics.fillStyle(0xFF69B4, 1); graphics.fillRect(0, 0, 25, 25); graphics.generateTexture('mazzo', 25, 25);
-    graphics.clear(); graphics.fillStyle(0x800080, 1); graphics.fillRect(0, 0, 40, 50); graphics.generateTexture('ragazza', 40, 50);
     graphics.clear(); graphics.fillStyle(0xE30022, 1); graphics.fillCircle(8, 8, 8); graphics.generateTexture('cuore', 16, 16);
 }
 
@@ -69,17 +72,18 @@ function create() {
     isGameOver = false;
     vittoriaRaggiunta = false;
     
-    // TRUCCO PER TESTARE IL FINALE: Cambia a 0 quando vuoi giocare per davvero!
     score = 0; 
-    fioriRaccolti = 0; 
+    fioriRaccolti = 0;
 
     this.cameras.main.setBackgroundColor('#87CEEB'); 
 
-    // Pavimento e Giocatore
+    // Pavimento
     let platforms = this.physics.add.staticGroup();
     ground = platforms.create(195, 750, 'pavimento'); 
 
-    player = this.physics.add.sprite(80, 400, 'protagonista');
+    // Giocatore (Andrea) - Ridimensionato a 55x70 pixel per proporzioni stile South Park
+    player = this.physics.add.sprite(80, 400, 'ndr_static');
+    player.setDisplaySize(55, 70);
     player.setCollideWorldBounds(true); 
 
     obstacles = this.physics.add.group();
@@ -148,6 +152,19 @@ function update() {
         player.setX(80);
         score += 0.05; 
         scoreText.setText(Math.floor(score) + ' su 250 km');
+
+        // CAMBIO IMMAGINE SALTO / CAMMINATA
+        if (!player.body.touching.down) {
+            if (player.texture.key !== 'ndr_jump') {
+                player.setTexture('ndr_jump');
+                player.setDisplaySize(55, 70);
+            }
+        } else {
+            if (player.texture.key !== 'ndr_static') {
+                player.setTexture('ndr_static');
+                player.setDisplaySize(55, 70);
+            }
+        }
 
         if (score >= 250) {
             innescaVittoria.call(this);
@@ -252,7 +269,9 @@ function innescaVittoria() {
     obstacles.clear(true, true);
     mazziGroup.clear(true, true);
 
-    ragazza = this.physics.add.sprite(450, 525, 'ragazza');
+    // La ragazza (Silvia) entra in scena
+    ragazza = this.physics.add.sprite(450, 515, 'slvblv');
+    ragazza.setDisplaySize(55, 70);
     ragazza.body.allowGravity = false;
     ragazza.setVelocityX(-150);
 
@@ -262,6 +281,10 @@ function innescaVittoria() {
 function trionfoBaci(playerHit, ragazzaHit) {
     this.physics.pause();
     
+    // Andrea cambia espressione per il finale
+    playerHit.setTexture('ndr_final');
+    playerHit.setDisplaySize(55, 70);
+
     vittoriaText.setVisible(true);
     restartText.y = 420; 
     restartText.setVisible(true);
